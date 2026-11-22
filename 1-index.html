@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>InWork — حوكمة العمالة الفنية (PoC)</title>
+<meta name="description" content="نموذج إثبات مفهوم (Proof of Concept / MVP) لمنصة إن وورك — حوكمة العمالة الفنية في التجمع الخامس، القاهرة الجديدة. محاكاة تفاعلية بالكامل.">
+<link rel="stylesheet" href="leaflet.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="map" aria-label="خريطة التجمع الخامس"></div>
+
+<div class="sim-ribbon"><b>InWork</b> · نموذج إثبات مفهوم — محاكاة تفاعلية، لا خدمة فعلية</div>
+
+<button class="menu-fab" id="menuFab" aria-label="القائمة" title="القائمة">☰</button>
+
+<nav class="side-menu" id="sideMenu" aria-label="القائمة الجانبية">
+  <h3>بطاقة الحوكمة</h3>
+  <div class="gov-card">
+    نموذج «إن وورك» لحوكمة العمالة الفنية: تحقق موثق من الفنيين، تسعير عادل استرشادي، وتتبع موحد للطلبات — موجه للشركات والمستثمرين والجهات الحكومية (B2G/B2B).
+    <br><span class="sim-tag">محاكاة تفاعلية — شارة التحقق B2G هنا ليست اعتماداً حكومياً رسمياً</span>
+  </div>
+
+  <h3>وضع التشغيل</h3>
+  <div class="seg">
+    <button data-mode-btn="client" class="active">وضع العميل</button>
+    <button data-mode-btn="tech">وضع الفني</button>
+  </div>
+
+  <h3>طبقة الخريطة</h3>
+  <div class="seg">
+    <button data-layer-btn="schematic" class="active">معمارية مدمجة</button>
+    <button data-layer-btn="osm">OpenStreetMap</button>
+  </div>
+
+  <h3>أحياء التجمع — وصول سريع</h3>
+  <div class="hood-list">
+    <button data-hood="nargis">النرجس</button>
+    <button data-hood="nargis-new">النرجس الجديدة</button>
+    <button data-hood="yasmine">الياسمين</button>
+    <button data-hood="banafseg">البنفسج</button>
+    <button data-hood="lotus">اللوتس</button>
+    <button data-hood="andalus">الأندلس</button>
+    <button data-hood="rehab">الرحاب</button>
+    <button data-hood="auc">AUC</button>
+  </div>
+
+  <h3>المحفظة</h3>
+  <div class="wallet-box">
+    <span id="walletLabel">رصيد المحفظة (محاكاة)</span>
+    <b id="walletValue">1,250 ج.م</b>
+  </div>
+
+  <button class="reset-btn" id="resetBtn">إعادة ضبط المحاكاة (Reset Demo)</button>
+
+  <div class="menu-footer">
+    Proof of Concept / MVP — المؤسس والمطور: Aly Hussein Zopair (علي حسين زبير ALY HUSSEIN ZOPAIR).
+    <br>بيانات الخريطة: © OpenStreetMap contributors · الرسم التخطيطي مبني على إحداثيات مثبتة بخدمات تحديد مواقع عامة.
+  </div>
+</nav>
+
+<div class="bottom-sheet" id="bottomSheet">
+  <div class="sheet-handle" id="sheetHandle">
+    <span class="grip"></span>
+    <span class="sheet-title" id="sheetTitle">طلب خدمة فنية — محاكاة</span>
+    <span class="sheet-toggle">▾</span>
+  </div>
+  <div class="sheet-body" id="sheetBody"></div>
+  <div class="sheet-footer">
+    Proof of Concept / MVP — المؤسس والمطور: Aly Hussein Zopair (علي حسين زبير ALY HUSSEIN ZOPAIR) · كل العروض والمدفوعات والتتبع محاكاة
+  </div>
+</div>
+
+<div class="coords-chip" id="coordsChip"></div>
+<div class="map-note" id="mapNote"></div>
+<div class="toast" id="toast"></div>
+
+<div class="demo-modal-back" id="demoModalBack">
+  <div class="demo-modal" role="dialog" aria-modal="true">
+    <h4 id="demoModalTitle"></h4>
+    <div class="msg-preview" id="demoModalMsg"></div>
+    <div class="note" id="demoModalNote"></div>
+    <button class="btn-ghost" id="demoModalClose">إغلاق</button>
+  </div>
+</div>
+
+<script src="leaflet.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
