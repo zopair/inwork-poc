@@ -15,7 +15,7 @@
   var schematicAttrib = 'رسم تخطيطي تقريبي — InWork PoC';
   var osmAttrib = '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
-  // الطبقة المعمارية المدمجة (SVG) — تعمل دائماً لأنها جزء من الصفحة
+  // الطبقة التخطيطية الجغرافية المبسطة المدمجة (SVG) — تعمل دائماً لأنها جزء من الصفحة
   function project(lat, lng) {
     var b = D.svgBounds;
     return {
@@ -53,17 +53,21 @@
 
     // الطرق
     D.roads.forEach(function (r) {
-      var pts = r.points.map(function (p) { var q = project(p[0], p[1]); return q.x + ',' + q.y; }).join(' ');
-      var pl = document.createElementNS(NS, 'polyline');
-      pl.setAttribute('points', pts);
-      pl.setAttribute('fill', 'none');
-      if (r.kind === 'highway') { pl.setAttribute('stroke', '#B84A27'); pl.setAttribute('stroke-width', '7'); pl.setAttribute('stroke-opacity', '0.55'); }
-      else if (r.kind === 'axis') { pl.setAttribute('stroke', '#8A8577'); pl.setAttribute('stroke-width', '6'); }
-      else { pl.setAttribute('stroke', '#FFFFFF'); pl.setAttribute('stroke-width', '9'); pl.setAttribute('stroke-dasharray', r.kind === 'major' ? '' : '4 3'); }
-      pl.setAttribute('stroke-linecap', 'round'); pl.setAttribute('stroke-linejoin', 'round');
-      svg.appendChild(pl);
+      var paths = r.paths || [r.points];
+      paths.forEach(function (path) {
+        var pts = path.map(function (p) { var q = project(p[0], p[1]); return q.x + ',' + q.y; }).join(' ');
+        var pl = document.createElementNS(NS, 'polyline');
+        pl.setAttribute('points', pts);
+        pl.setAttribute('fill', 'none');
+        if (r.kind === 'highway') { pl.setAttribute('stroke', '#B84A27'); pl.setAttribute('stroke-width', '7'); pl.setAttribute('stroke-opacity', '0.55'); }
+        else if (r.kind === 'axis') { pl.setAttribute('stroke', '#8A8577'); pl.setAttribute('stroke-width', '6'); }
+        else { pl.setAttribute('stroke', '#FFFFFF'); pl.setAttribute('stroke-width', '9'); pl.setAttribute('stroke-dasharray', r.kind === 'major' ? '' : '4 3'); }
+        pl.setAttribute('stroke-linecap', 'round'); pl.setAttribute('stroke-linejoin', 'round');
+        svg.appendChild(pl);
+      });
 
-      var mid = r.points[Math.floor(r.points.length / 2)];
+      var longest = paths.reduce(function (a, b) { return b.length > a.length ? b : a; }, paths[0]);
+      var mid = longest[Math.floor(longest.length / 2)];
       var mp = project(mid[0], mid[1]);
       var t = document.createElementNS(NS, 'text');
       t.setAttribute('x', mp.x); t.setAttribute('y', mp.y - 6);
@@ -120,8 +124,8 @@
     } else {
       if (map.hasLayer(osmLayer)) map.removeLayer(osmLayer);
       if (!map.hasLayer(schematicOverlay)) schematicOverlay.addTo(map);
-      mapNote.textContent = 'الخريطة المعمارية المدمجة — رسم تخطيطي تقريبي يعمل دون اتصال.';
-      if (fromError) showToast('تعذر تحميل بلاطات OpenStreetMap — تم الرجوع تلقائياً للخريطة المعمارية المدمجة.');
+      mapNote.textContent = 'الخريطة التخطيطية الجغرافية المبسطة المدمجة — رسم تقريبي بهندسة OpenStreetMap، يعمل بعد التحميل دون اتصال.';
+      if (fromError) showToast('تعذر تحميل بلاطات OpenStreetMap — تم الرجوع تلقائياً للخريطة التخطيطية المدمجة.');
     }
     Array.prototype.forEach.call(document.querySelectorAll('[data-layer-btn]'), function (b) {
       b.classList.toggle('active', b.getAttribute('data-layer-btn') === kind);
